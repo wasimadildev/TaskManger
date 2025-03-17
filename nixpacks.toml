@@ -1,11 +1,12 @@
 [phases.setup]
 nixpkgs = ['python310', 'postgresql']
+cmds = ['ln -sf /nix/store/*-python-3.10*/bin/python3 /usr/local/bin/python']
 
 [phases.install]
-cmds = ['python -m pip install --upgrade pip', 'python -m pip install -r requirements.txt']
+cmds = ['/usr/local/bin/python -m pip install --upgrade pip', '/usr/local/bin/python -m pip install -r requirements.txt']
 
 [phases.build]
-cmds = ['python manage.py collectstatic --noinput']
+cmds = ['/usr/local/bin/python manage.py collectstatic --noinput']
 
 [start]
-cmd = 'python -m gunicorn task_management.wsgi:application --log-file -' 
+cmd = '/usr/local/bin/python -m gunicorn task_management.wsgi:application --log-file -' 
