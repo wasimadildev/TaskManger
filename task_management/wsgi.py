@@ -11,7 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-# Default to production settings when deployed
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'task_management.production')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'task_management.settings')
 
 application = get_wsgi_application()
