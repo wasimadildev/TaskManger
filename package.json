@@ -1,0 +1,21 @@
+{
+  "name": "taskmanger",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./tasks/static/css/tailwind.css -o ./tasks/static/css/styles.css",
+    "watch": "tailwindcss -i ./tasks/static/css/tailwind.css -o ./tasks/static/css/styles.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "10.4.17",
+    "postcss": "8.4.35",
+    "tailwindcss": "3.4.17"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

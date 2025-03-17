@@ -1,0 +1,133 @@
+{% extends "tasks/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        Edit Task - Task Management
+    {% else %}
+        New Task - Task Management
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                {% if form.instance.pk %}
+                    Edit Task
+                {% else %}
+                    New Task
+                {% endif %}
+            </h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                {% if form.instance.pk %}
+                    Update the task details below.
+                {% else %}
+                    Fill in the task details below.
+                {% endif %}
+            </p>
+        </div>
+        <div class="border-t border-gray-200">
+            <form method="POST" class="px-4 py-5 sm:p-6">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-6">
+                        <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ form.title.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ form.title|add_class:"shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" }}
+                        </div>
+                        {% if form.title.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.title.errors }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ form.description.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ form.description|add_class:"shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" }}
+                        </div>
+                        {% if form.description.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.description.errors }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.due_date.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ form.due_date.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ form.due_date|add_class:"shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" }}
+                        </div>
+                        {% if form.due_date.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.due_date.errors }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.project.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ form.project.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ form.project|add_class:"shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" }}
+                        </div>
+                        {% if form.project.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.project.errors }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.status.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ form.status.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ form.status|add_class:"shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" }}
+                        </div>
+                        {% if form.status.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.status.errors }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.priority.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ form.priority.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ form.priority|add_class:"shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" }}
+                        </div>
+                        {% if form.priority.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.priority.errors }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="{{ form.assigned_to.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ form.assigned_to.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ form.assigned_to|add_class:"shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" }}
+                        </div>
+                        {% if form.assigned_to.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.assigned_to.errors }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-between">
+                    <a href="{% url 'task_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="bi bi-arrow-left -ml-1 mr-2"></i>
+                        Back to Tasks
+                    </a>
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="bi bi-save -ml-1 mr-2"></i>
+                        Save Task
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

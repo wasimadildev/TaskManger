@@ -1,0 +1,107 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Projects - Task Management{% endblock %}
+
+{% block content %}
+<div class="sm:flex sm:items-center sm:justify-between mb-6">
+    <div class="flex-1 min-w-0">
+        <h2 class="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:text-3xl sm:truncate">
+            Projects
+        </h2>
+    </div>
+    <div class="mt-4 flex sm:mt-0 sm:ml-4">
+        <a href="{% url 'project_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <i class="bi bi-plus-lg -ml-1 mr-2"></i>
+            New Project
+        </a>
+    </div>
+</div>
+
+{% if projects %}
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {% for project in projects %}
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-start justify-between">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white truncate">{{ project.name }}</h3>
+                        <div class="ml-2 flex-shrink-0 flex">
+                            <div class="relative inline-block text-left dropdown">
+                                <button onclick="toggleDropdown('dropdown-{{ project.pk }}')" type="button" class="flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white focus:outline-none" id="options-menu-{{ project.pk }}" aria-expanded="true" aria-haspopup="true">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <div id="dropdown-{{ project.pk }}" class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none z-10" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-{{ project.pk }}">
+                                    <div class="py-1" role="none">
+                                        <a href="{% url 'project_update' project.pk %}" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem">
+                                            <i class="bi bi-pencil mr-2"></i> Edit
+                                        </a>
+                                        {% if user.is_staff or project.owner == user %}
+                                            <a href="{% url 'project_delete' project.pk %}" class="text-red-600 dark:text-red-400 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem">
+                                                <i class="bi bi-trash mr-2"></i> Delete
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        {{ project.description|truncatewords:30|default:"No description provided." }}
+                    </p>
+                    <div class="mt-4">
+                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                            <i class="bi bi-calendar mr-1"></i> Created {{ project.created_at|date:"M d, Y" }}
+                        </span>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 px-4 py-4 sm:px-6">
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            <i class="bi bi-person mr-1"></i> {{ project.owner.username }}
+                        </div>
+                        <a href="{% url 'task_list' %}?project={{ project.pk }}" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-5 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-100 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="bi bi-list-task mr-1"></i> View Tasks
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="rounded-md bg-blue-50 dark:bg-blue-900 p-4">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="bi bi-info-circle text-blue-400 dark:text-blue-300"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-blue-700 dark:text-blue-200">
+                    No projects found. Create a new project to get started!
+                </p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<script>
+function toggleDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    if (dropdown) {
+        dropdown.classList.toggle('hidden');
+        
+        // Close all other dropdowns
+        document.querySelectorAll('.dropdown > div').forEach(menu => {
+            if (menu.id !== dropdownId) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function closeDropdown(e) {
+            if (!dropdown.contains(e.target) && !e.target.closest('button[onclick="toggleDropdown(\'' + dropdownId + '\')"]')) {
+                dropdown.classList.add('hidden');
+                document.removeEventListener('click', closeDropdown);
+            }
+        });
+    }
+}
+</script>
+{% endblock %} 
