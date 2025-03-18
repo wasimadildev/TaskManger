@@ -1,0 +1,30 @@
+name: task-manager
+service:
+  name: web
+  instance_type: nano
+  regions: fra
+  ports:
+    - port: 8000
+      protocol: http
+  routes:
+    - path: /
+      port: 8000
+  healthchecks:
+    path: /health/
+    port: 8000
+  env:
+    - name: PORT
+      value: "8000"
+    - name: DJANGO_ALLOWED_HOSTS
+      value: "*"
+    - name: DEBUG
+      value: "False"
+  build:
+    type: buildpacks
+    builder: heroku/buildpacks:22
+    buildpacks:
+      - heroku/python
+    env:
+      - name: PYTHONUNBUFFERED
+        value: "true"
+    command: bash build.sh 

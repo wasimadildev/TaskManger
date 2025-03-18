@@ -19,12 +19,17 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
+
+def health_check(request):
+    return HttpResponse("OK")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('tasks.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='tasks/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='tasks/logout.html', next_page='/'), name='logout'),
+    path('health/', health_check, name='health_check'),
 ]
 
 # Serve static files during development
