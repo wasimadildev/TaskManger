@@ -20,9 +20,17 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
 
 def health_check(request):
-    return HttpResponse("OK")
+    """
+    Basic health check endpoint that always returns HTTP 200.
+    This is used by Koyeb to determine if the application is running.
+    """
+    logger.info("Health check request received")
+    return HttpResponse("OK", status=200)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
